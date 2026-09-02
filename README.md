@@ -7,7 +7,9 @@ Este proyecto contiene un entorno de simulación en Python para modelar un proce
 * `src/core/scale_up.py`: Módulo para el cálculo de variables críticas de escalado manteniendo similitud geométrica. Incluye:
   * Escalado por **Potencia/Volumen (P/V) constante** (recomendado para mantener turbulencia/transferencia de masa).
   * Escalado por **Velocidad de punta del impulsor ($v_{tip}$) constante** (recomendado para células sensibles a cizallamiento).
-  * Ecuaciones base para mantener $k_L a$ (Coeficiente volumétrico de transferencia de oxígeno) constante.
+  * Ecuaciones para mantener **$k_L a$ (Coeficiente volumétrico de transferencia de oxígeno)** constante.
+  * Cálculo de **Tiempo de Mezcla ($t_m$)** mediante número de mezcla adimensional.
+  * Estimación de la relación **Área de Enfriamiento / Volumen ($A/V$)**, crucial para anticipar problemas de transferencia de calor en bioprocesos exotérmicos.
 * `src/models/kinetics.py`: Módulo con el modelo matemático basado en cinética de Monod y Luedeking-Piret (modificado) para modelar crecimiento de biomasa, consumo de sustrato (grados Brix) y formación de producto.
 * `escalado_main.py`: Script de ejecución principal que genera el reporte de escalado y las curvas cinéticas.
 * `simulacion.py`: Script original de la curva de fermentación en un solo archivo.

@@ -49,6 +49,24 @@ class BioreactorScaleUp:
         Area = np.pi * ((Dt / 2.0) ** 2)
         return Q_gas / Area
 
+    def calculate_mixing_time(self, Dt, Di, N_rps):
+        """
+        Calcula el tiempo de mezcla tm (s) usando la correlación empírica:
+        N * tm = 1.5 * (Dt/Di)^2
+        """
+        # Para un régimen completamente turbulento
+        return (1.5 * (Dt / Di) ** 2) / N_rps
+
+    def calculate_cooling_area_ratio(self, Dt):
+        """
+        Calcula la relación Área de Enfriamiento / Volumen (A/V) en m^-1.
+        Asume un tanque cilíndrico donde la altura del líquido H = 2*Dt
+        """
+        # A = pi * Dt * H = 2 * pi * Dt^2
+        # V = pi/4 * Dt^2 * H = pi/2 * Dt^3
+        # A/V = 4 / Dt
+        return 4.0 / Dt
+
     def constant_power_volume(self):
         """Retorna la velocidad de agitación (rpm) para la escala mayor manteniendo P/V"""
         N2 = self.N1 * (self.scale_factor ** (-2/3))
@@ -67,28 +85,36 @@ class BioreactorScaleUp:
         pv1 = self.calculate_power_volume(self.N1, self.Di1, self.V1)
         vs1 = self.get_superficial_velocity(self.V1, self.Dt1)
         kla1 = self.calculate_kla(pv1, vs1)
+        tm1 = self.calculate_mixing_time(self.Dt1, self.Di1, self.N1)
+        av1 = self.calculate_cooling_area_ratio(self.Dt1)
         
         # Variables escala 2 (Manteniendo P/V)
         pv2_pv = self.calculate_power_volume(N2_pv, self.Di2, self.V2)
         vs2 = self.get_superficial_velocity(self.V2, self.Dt2)
         kla2_pv = self.calculate_kla(pv2_pv, vs2)
+        tm2_pv = self.calculate_mixing_time(self.Dt2, self.Di2, N2_pv)
+        av2 = self.calculate_cooling_area_ratio(self.Dt2)
         
         # Variables escala 2 (Manteniendo v_tip)
         pv2_tip = self.calculate_power_volume(N2_tip, self.Di2, self.V2)
         kla2_tip = self.calculate_kla(pv2_tip, vs2)
+        tm2_tip = self.calculate_mixing_time(self.Dt2, self.Di2, N2_tip)
 
         report = f"--- Reporte Avanzado de Escalado ({self.V1}L -> {self.V2}L) ---\n"
         report += f"Factor geométrico: {self.scale_factor:.2f} | Aireación: {self.vvm} VVM\n"
+        report += f"Área de enfriamiento vs Volumen (A/V) cae de {av1:.1f} m^-1 a {av2:.1f} m^-1\n"
+        report += f"-> Nota: El biorreactor industrial tendrá una capacidad de enfriamiento mucho menor por cada litro.\n"
+        
         report += f"\n[Escala Piloto - {self.V1}L]\n"
-        report += f"Agitación: {self.N1*60:.0f} rpm | P/V: {pv1:.1f} W/m^3 | k_La: {kla1*3600:.1f} h^-1\n"
+        report += f"Agitación: {self.N1*60:.0f} rpm | P/V: {pv1:.1f} W/m^3 | k_La: {kla1*3600:.1f} h^-1 | Tiempo Mezcla: {tm1:.1f} s\n"
         
         report += f"\n[Escala Industrial - {self.V2}L : Criterio P/V Constante]\n"
-        report += f"Agitación: {N2_pv*60:.0f} rpm | P/V: {pv2_pv:.1f} W/m^3 | k_La: {kla2_pv*3600:.1f} h^-1\n"
-        report += f"-> Nota: k_La aumenta debido a la mayor velocidad superficial del gas (vs).\n"
+        report += f"Agitación: {N2_pv*60:.0f} rpm | P/V: {pv2_pv:.1f} W/m^3 | k_La: {kla2_pv*3600:.1f} h^-1 | Tiempo Mezcla: {tm2_pv:.1f} s\n"
+        report += f"-> Impacto: k_La aumenta por mayor vs. El tiempo de mezcla (t_m) empeora al ser un tanque mayor.\n"
         
         report += f"\n[Escala Industrial - {self.V2}L : Criterio v_tip Constante]\n"
-        report += f"Agitación: {N2_tip*60:.0f} rpm | P/V: {pv2_tip:.1f} W/m^3 | k_La: {kla2_tip*3600:.1f} h^-1\n"
-        report += f"-> Nota: Fuerte caída en P/V y transferencia de oxígeno, riesgo de limitación.\n"
+        report += f"Agitación: {N2_tip*60:.0f} rpm | P/V: {pv2_tip:.1f} W/m^3 | k_La: {kla2_tip*3600:.1f} h^-1 | Tiempo Mezcla: {tm2_tip:.1f} s\n"
+        report += f"-> Impacto: Fuerte caída en P/V. El tiempo de mezcla se vuelve críticamente lento.\n"
         
         return report
 
