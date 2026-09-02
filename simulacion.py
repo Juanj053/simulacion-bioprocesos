@@ -2,8 +2,8 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
-# Parámetros cinéticos (Estimados para levadura en jugo de piña)
-# Ajustables según los datos experimentales de la Bitácora
+# Parámetros cinéticos genéricos
+# Ajustables según datos experimentales de fermentación
 mu_max = 0.3    # Tasa máxima de crecimiento (1/h)
 Ks = 2.5        # Constante de semisaturación (g/L)
 Yxs = 0.1       # Rendimiento de biomasa por sustrato (g X / g S)

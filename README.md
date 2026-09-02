@@ -1,6 +1,6 @@
-# Simulación de Bioprocesos 
+# Simulación de Bioprocesos y Biorreactores
 
-Este proyecto contiene un entorno de simulación para modelar el proceso de fermentación de residuos agroindustriales, basado en los datos recopilados en la bitácora de diseño de biorreactores.
+Este proyecto contiene un entorno de simulación en Python para modelar un proceso de fermentación genérico de residuos agroindustriales.
 
 ## Contenido
 
