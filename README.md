@@ -1,34 +1,33 @@
 # Simulación de Bioprocesos y Biorreactores
 
-Este proyecto contiene un entorno de simulación en Python para modelar un proceso de fermentación genérico de residuos agroindustriales.
+Este proyecto contiene un entorno de simulación en Python para modelar un proceso de fermentación genérico a partir de residuos orgánicos agrícolas, y sirve como **referencia técnica para el escalado de biorreactores (ej. 20L a 200L)**.
 
-## Contenido
+## Estructura del Proyecto
 
-* `simulacion.py`: Script principal de Python que utiliza `scipy.integrate.odeint` para resolver las ecuaciones diferenciales del modelo cinético de Monod. Simula el crecimiento de biomasa, consumo de sustrato (grados Brix) y producción (alcohol/ésteres) a lo largo del tiempo.
-* `requirements.txt`: Dependencias del entorno de simulación (`numpy`, `scipy`, `matplotlib`, `pandas`).
-* `biorxiv_results.json`: Resultados de la búsqueda de literatura relacionada con biorreactores y escalado, obtenida de bioRxiv.
+* `src/core/scale_up.py`: Módulo para el cálculo de variables críticas de escalado manteniendo similitud geométrica. Incluye:
+  * Escalado por **Potencia/Volumen (P/V) constante** (recomendado para mantener turbulencia/transferencia de masa).
+  * Escalado por **Velocidad de punta del impulsor ($v_{tip}$) constante** (recomendado para células sensibles a cizallamiento).
+  * Ecuaciones base para mantener $k_L a$ (Coeficiente volumétrico de transferencia de oxígeno) constante.
+* `src/models/kinetics.py`: Módulo con el modelo matemático basado en cinética de Monod y Luedeking-Piret (modificado) para modelar crecimiento de biomasa, consumo de sustrato (grados Brix) y formación de producto.
+* `escalado_main.py`: Script de ejecución principal que genera el reporte de escalado y las curvas cinéticas.
+* `simulacion.py`: Script original de la curva de fermentación en un solo archivo.
+
+## Teoría de Escalado Implementada
+
+Al escalar de un reactor piloto (20L) a uno industrial (200L), no es posible mantener todas las variables físicas constantes simultáneamente (mezcla, corte, transferencia de calor). Este entorno permite proyectar cuál es la velocidad de agitación (rpm) óptima en la escala mayor dependiendo del criterio elegido:
+- Si se mantiene $P/V$ constante, el tiempo de mezcla aumentará, pero la transferencia de gas-líquido ($k_L a$) será similar.
+- Si se mantiene $v_{tip}$ constante, se reduce el daño celular, pero la mezcla puede ser deficiente.
 
 ## Uso
 
-1. Crear un entorno virtual de Python y activarlo:
+1. Crear un entorno virtual de Python e instalar las dependencias:
    ```bash
    python3 -m venv venv
    source venv/bin/activate
-   ```
-
-2. Instalar dependencias:
-   ```bash
    pip install -r requirements.txt
    ```
 
-3. Ejecutar la simulación:
+2. Ejecutar el análisis de escalado:
    ```bash
-   python simulacion.py
+   python escalado_main.py
    ```
-
-Esto generará un gráfico `simulacion_batch_20L.png` que muestra la curva de fermentación.
-
-## Objetivos del Modelo
-
-- Predecir el comportamiento del biorreactor en la fase de 20L y proyectar el escalado a digestores de 200L.
-- Evaluar el impacto de variables clave identificadas durante el proceso, como la concentración de azúcares y el rendimiento del inóculo.
