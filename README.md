@@ -11,7 +11,9 @@ Este proyecto contiene un entorno de simulación en Python para modelar un proce
   * Cálculo de **Tiempo de Mezcla ($t_m$)** mediante número de mezcla adimensional.
   * Estimación de la relación **Área de Enfriamiento / Volumen ($A/V$)**, crucial para anticipar problemas de transferencia de calor en bioprocesos exotérmicos.
 * `src/models/kinetics.py`: Módulo con el modelo matemático basado en cinética de Monod y Luedeking-Piret (modificado) para modelar crecimiento de biomasa, consumo de sustrato (grados Brix) y formación de producto.
-* `escalado_main.py`: Script de ejecución principal que genera el reporte de escalado y las curvas cinéticas.
+* `src/models/consortium.py`: Simulador estequiométrico-empírico de consorcios microbianos. Permite estimar la composición final del bioproducto (ej. Etanol, Ácido Láctico, Aminoácidos) en base al perfil de la materia prima (*feedstock*) y los microorganismos inoculados (ej. *Levaduras, Lactobacillus, Bacillus*).
+* `escalado_main.py`: Script de ejecución principal que genera el reporte de escalado físico y las curvas cinéticas.
+* `herramienta_composicion.py`: Script para ejecutar escenarios comparativos sobre el consorcio biológico y predecir perfiles de bioproductos finales (Biol, fertilizantes, etc.).
 * `simulacion.py`: Script original de la curva de fermentación en un solo archivo.
 
 ## Teoría de Escalado Implementada
