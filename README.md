@@ -1,6 +1,6 @@
-# Simulación de Bioprocesos - Agromanper
+# Simulación de Bioprocesos 
 
-Este proyecto contiene un entorno de simulación para modelar el proceso de fermentación de residuos de piña, basado en los datos recopilados en la bitácora de diseño de biorreactores.
+Este proyecto contiene un entorno de simulación para modelar el proceso de fermentación de residuos agroindustriales, basado en los datos recopilados en la bitácora de diseño de biorreactores.
 
 ## Contenido
 
