@@ -1,7 +1,7 @@
 import numpy as np
 
 class FermentationKinetics:
-    def __init__(self, mu_max=0.3, Ks=2.5, Yxs=0.1, Yps=0.4, kd=0.01):
+    def __init__(self, mu_max: float = 0.3, Ks: float = 2.5, Yxs: float = 0.1, Yps: float = 0.4, kd: float = 0.01):
         """
         Modelo de cinética de fermentación.
         mu_max: Tasa máxima de crecimiento específico (1/h)
@@ -10,11 +10,14 @@ class FermentationKinetics:
         Yps: Rendimiento producto/sustrato (g P / g S)
         kd: Tasa de muerte celular (1/h)
         """
-        self.mu_max = mu_max
-        self.Ks = Ks
-        self.Yxs = Yxs
-        self.Yps = Yps
-        self.kd = kd
+        if mu_max < 0 or Ks <= 0 or Yxs <= 0 or Yps < 0 or kd < 0:
+            raise ValueError("Parámetros cinéticos inválidos.")
+            
+        self.mu_max = float(mu_max)
+        self.Ks = float(Ks)
+        self.Yxs = float(Yxs)
+        self.Yps = float(Yps)
+        self.kd = float(kd)
 
     def get_derivatives(self, y, t):
         """

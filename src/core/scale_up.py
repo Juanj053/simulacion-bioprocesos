@@ -1,7 +1,7 @@
 import numpy as np
 
 class BioreactorScaleUp:
-    def __init__(self, v1, v2, d_t1, d_i1, n1, vvm=1.0):
+    def __init__(self, v1: float, v2: float, d_t1: float, d_i1: float, n1: float, vvm: float = 1.0):
         """
         Inicializa la clase para el escalado de biorreactores.
         
@@ -13,12 +13,15 @@ class BioreactorScaleUp:
         n1: Velocidad de agitación en escala menor (rpm)
         vvm: Volumen de aire por volumen de líquido por minuto (min^-1)
         """
-        self.V1 = v1
-        self.V2 = v2
-        self.Dt1 = d_t1
-        self.Di1 = d_i1
-        self.N1 = n1 / 60.0  # rps
-        self.vvm = vvm
+        if v1 <= 0 or v2 <= 0 or d_t1 <= 0 or d_i1 <= 0 or n1 <= 0 or vvm < 0:
+            raise ValueError("Los parámetros del biorreactor deben ser mayores que cero.")
+            
+        self.V1 = float(v1)
+        self.V2 = float(v2)
+        self.Dt1 = float(d_t1)
+        self.Di1 = float(d_i1)
+        self.N1 = float(n1) / 60.0  # rps
+        self.vvm = float(vvm)
         
         # Similitud geométrica
         self.scale_factor = (self.V2 / self.V1) ** (1/3)
@@ -29,8 +32,10 @@ class BioreactorScaleUp:
         self.Np = 5.0      # Número de potencia
         self.rho = 1000.0  # Densidad (kg/m^3)
 
-    def calculate_power_volume(self, N_rps, Di, V_liters):
+    def calculate_power_volume(self, N_rps: float, Di: float, V_liters: float) -> float:
         """Calcula la Potencia por unidad de Volumen (W/m^3)"""
+        if V_liters <= 0:
+            raise ValueError("El volumen debe ser mayor que cero.")
         V_m3 = V_liters / 1000.0
         P = self.Np * self.rho * (N_rps ** 3) * (Di ** 5)
         return P / V_m3
