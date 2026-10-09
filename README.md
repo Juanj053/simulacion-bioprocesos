@@ -1,5 +1,10 @@
 # Simulación de Bioprocesos y Biorreactores
 
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Scale-Up](https://img.shields.io/badge/Scale--Up-20L%20%E2%86%92%20200L-blueviolet.svg)]()
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Juan%20Jos%C3%A9%20%C3%81lvarez-0A66C2.svg?logo=linkedin)](https://www.linkedin.com/in/juanj-alva)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 Este proyecto contiene un entorno de simulación en Python para modelar un proceso de fermentación genérico a partir de residuos orgánicos agrícolas, y sirve como **referencia técnica para el escalado de biorreactores (ej. 20L a 200L)**.
 
 ## Estructura del Proyecto
@@ -35,3 +40,18 @@ Al escalar de un reactor piloto (20L) a uno industrial (200L), no es posible man
    ```bash
    python escalado_main.py
    ```
+
+---
+
+## Autor & Contacto Académico / Profesional
+**Ing. Juan José Álvarez Morales**  
+Ingeniero en Biotecnología — Fundador de Elevate Biotech & Investigador en Agromanper  
+- **LinkedIn:** [linkedin.com/in/juanj-alva](https://www.linkedin.com/in/juanj-alva)  
+- **GitHub:** [@Juanj053](https://github.com/Juanj053)  
+- **Email:** [`jjalvarezm77@gmail.com`](mailto:jjalvarezm77@gmail.com)  
+
+---
+
+## Licencia
+Distribuido bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
