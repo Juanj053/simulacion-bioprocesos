@@ -1,8 +1,9 @@
 from src.models.consortium import BioproductSimulator
 
+
 def main():
     print("Iniciando Simulador de Composición de Bioproductos...\n")
-    
+
     # Perfil típico de residuos agrícolas orgánicos diluidos
     feedstock_base = {
         'azucares_simples': 120.0,   # Glucosa, fructosa, sacarosa
@@ -10,14 +11,14 @@ def main():
         'nitrogeno_organico': 15.0,  # Proteínas
         'minerales': 5.0             # K, Ca, Mg
     }
-    
+
     # Escenario 1: Fermentación espontánea (Solo levaduras salvajes)
     consorcio_espontaneo = ['Levadura']
     sim1 = BioproductSimulator(feedstock_base, consorcio_espontaneo)
     print("ESCENARIO 1: Fermentación Alcohólica Simple")
     print(sim1.generate_report())
     print("\n")
-    
+
     # Escenario 2: Consorcio Completo (Biol Enriquecido)
     consorcio_completo = ['Levadura', 'Lactobacillus', 'Bacillus']
     sim2 = BioproductSimulator(feedstock_base, consorcio_completo)

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software in your bioprocess engineering research, please cite it as below."
+title: "Simulación de Bioprocesos y Escalado de Biorreactores (20 L a 200 L)"
+version: 0.2.0
+date-released: 2026-11-13
+authors:
+  - family-names: "Álvarez Morales"
+    given-names: "Juan José"
+    alias: "Juanj053"
+repository-code: "https://github.com/Juanj053/simulacion-bioprocesos"
+license: MIT
+keywords:
+  - bioprocess-engineering
+  - bioreactor-scale-up
+  - monod-kinetics
+  - microbial-consortium

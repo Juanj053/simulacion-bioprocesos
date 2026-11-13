@@ -1,4 +1,3 @@
-import numpy as np
 
 class FermentationKinetics:
     def __init__(self, mu_max: float = 0.3, Ks: float = 2.5, Yxs: float = 0.1, Yps: float = 0.4, kd: float = 0.01):
@@ -12,7 +11,7 @@ class FermentationKinetics:
         """
         if mu_max < 0 or Ks <= 0 or Yxs <= 0 or Yps < 0 or kd < 0:
             raise ValueError("Parámetros cinéticos inválidos.")
-            
+
         self.mu_max = float(mu_max)
         self.Ks = float(Ks)
         self.Yxs = float(Yxs)
@@ -24,21 +23,21 @@ class FermentationKinetics:
         Ecuaciones diferenciales para modelo batch.
         y = [X, S, P]
         """
-        X, S, P = y
-        
+        X, S, _P = y
+
         # Ecuación de Monod
         mu = self.mu_max * (S / (self.Ks + S))
-        
+
         # Cambio en biomasa (Crecimiento - Muerte)
         dXdt = (mu - self.kd) * X
-        
+
         # Consumo de sustrato (Asociado al crecimiento de biomasa)
         if S > 0:
             dSdt = -(1/self.Yxs) * mu * X
         else:
             dSdt = 0
-            
+
         # Formación de producto (Ecuación tipo Luedeking-Piret, aquí simplificada a asociado al crecimiento)
         dPdt = self.Yps * (1/self.Yxs) * mu * X
-        
+
         return [dXdt, dSdt, dPdt]

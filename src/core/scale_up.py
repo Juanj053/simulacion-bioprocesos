@@ -1,10 +1,11 @@
 import numpy as np
 
+
 class BioreactorScaleUp:
     def __init__(self, v1: float, v2: float, d_t1: float, d_i1: float, n1: float, vvm: float = 1.0):
         """
         Inicializa la clase para el escalado de biorreactores.
-        
+
         Parámetros:
         v1: Volumen del biorreactor piloto/escala menor (L)
         v2: Volumen del biorreactor industrial/escala mayor (L)
@@ -15,19 +16,19 @@ class BioreactorScaleUp:
         """
         if v1 <= 0 or v2 <= 0 or d_t1 <= 0 or d_i1 <= 0 or n1 <= 0 or vvm < 0:
             raise ValueError("Los parámetros del biorreactor deben ser mayores que cero.")
-            
+
         self.V1 = float(v1)
         self.V2 = float(v2)
         self.Dt1 = float(d_t1)
         self.Di1 = float(d_i1)
         self.N1 = float(n1) / 60.0  # rps
         self.vvm = float(vvm)
-        
+
         # Similitud geométrica
         self.scale_factor = (self.V2 / self.V1) ** (1/3)
         self.Dt2 = self.Dt1 * self.scale_factor
         self.Di2 = self.Di1 * self.scale_factor
-        
+
         # Propiedades del fluido y del impulsor (Asumiendo turbina Rushton y agua)
         self.Np = 5.0      # Número de potencia
         self.rho = 1000.0  # Densidad (kg/m^3)
@@ -85,21 +86,21 @@ class BioreactorScaleUp:
     def generate_report(self):
         N2_pv = self.constant_power_volume() / 60.0
         N2_tip = self.constant_tip_speed() / 60.0
-        
+
         # Variables escala 1
         pv1 = self.calculate_power_volume(self.N1, self.Di1, self.V1)
         vs1 = self.get_superficial_velocity(self.V1, self.Dt1)
         kla1 = self.calculate_kla(pv1, vs1)
         tm1 = self.calculate_mixing_time(self.Dt1, self.Di1, self.N1)
         av1 = self.calculate_cooling_area_ratio(self.Dt1)
-        
+
         # Variables escala 2 (Manteniendo P/V)
         pv2_pv = self.calculate_power_volume(N2_pv, self.Di2, self.V2)
         vs2 = self.get_superficial_velocity(self.V2, self.Dt2)
         kla2_pv = self.calculate_kla(pv2_pv, vs2)
         tm2_pv = self.calculate_mixing_time(self.Dt2, self.Di2, N2_pv)
         av2 = self.calculate_cooling_area_ratio(self.Dt2)
-        
+
         # Variables escala 2 (Manteniendo v_tip)
         pv2_tip = self.calculate_power_volume(N2_tip, self.Di2, self.V2)
         kla2_tip = self.calculate_kla(pv2_tip, vs2)
@@ -108,19 +109,19 @@ class BioreactorScaleUp:
         report = f"--- Reporte Avanzado de Escalado ({self.V1}L -> {self.V2}L) ---\n"
         report += f"Factor geométrico: {self.scale_factor:.2f} | Aireación: {self.vvm} VVM\n"
         report += f"Área de enfriamiento vs Volumen (A/V) cae de {av1:.1f} m^-1 a {av2:.1f} m^-1\n"
-        report += f"-> Nota: El biorreactor industrial tendrá una capacidad de enfriamiento mucho menor por cada litro.\n"
-        
+        report += "-> Nota: El biorreactor industrial tendrá una capacidad de enfriamiento mucho menor por cada litro.\n"
+
         report += f"\n[Escala Piloto - {self.V1}L]\n"
         report += f"Agitación: {self.N1*60:.0f} rpm | P/V: {pv1:.1f} W/m^3 | k_La: {kla1*3600:.1f} h^-1 | Tiempo Mezcla: {tm1:.1f} s\n"
-        
+
         report += f"\n[Escala Industrial - {self.V2}L : Criterio P/V Constante]\n"
         report += f"Agitación: {N2_pv*60:.0f} rpm | P/V: {pv2_pv:.1f} W/m^3 | k_La: {kla2_pv*3600:.1f} h^-1 | Tiempo Mezcla: {tm2_pv:.1f} s\n"
-        report += f"-> Impacto: k_La aumenta por mayor vs. El tiempo de mezcla (t_m) empeora al ser un tanque mayor.\n"
-        
+        report += "-> Impacto: k_La aumenta por mayor vs. El tiempo de mezcla (t_m) empeora al ser un tanque mayor.\n"
+
         report += f"\n[Escala Industrial - {self.V2}L : Criterio v_tip Constante]\n"
         report += f"Agitación: {N2_tip*60:.0f} rpm | P/V: {pv2_tip:.1f} W/m^3 | k_La: {kla2_tip*3600:.1f} h^-1 | Tiempo Mezcla: {tm2_tip:.1f} s\n"
-        report += f"-> Impacto: Fuerte caída en P/V. El tiempo de mezcla se vuelve críticamente lento.\n"
-        
+        report += "-> Impacto: Fuerte caída en P/V. El tiempo de mezcla se vuelve críticamente lento.\n"
+
         return report
 
 if __name__ == "__main__":

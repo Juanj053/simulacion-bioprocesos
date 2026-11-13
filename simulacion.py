@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint
-import matplotlib.pyplot as plt
 
 # Parámetros cinéticos genéricos
 # Ajustables según datos experimentales de fermentación
@@ -11,16 +11,16 @@ Yps = 0.4       # Rendimiento de producto (alcohol/ésteres) por sustrato (g P /
 
 # Modelo del biorreactor (Batch)
 def modelo_biorreactor(y, t):
-    X, S, P = y
-    
+    X, S, _P = y
+
     # Ecuación de Monod para la tasa de crecimiento específico
     mu = mu_max * S / (Ks + S)
-    
+
     # Ecuaciones diferenciales
     dXdt = mu * X
     dSdt = -(1/Yxs) * mu * X
     dPdt = Yps * (1/Yxs) * mu * X
-    
+
     return [dXdt, dSdt, dPdt]
 
 # Condiciones iniciales (Fase 2 - Biorreactores de 20L)
